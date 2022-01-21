@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package admin;
+package view;
 
 import dao.UserDAO;
 import javax.swing.JOptionPane;
 import model.User;
-import server.Room;
-import server.Server;
-import server.ServerThread;
+import controller.Room;
+import controller.Server;
+import controller.ServerThread;
 
 /**
  *

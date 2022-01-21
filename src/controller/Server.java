@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package controller;
 
-import admin.Admin;
+import view.Admin;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,9 +31,7 @@ public class Server {
         System.out.println("Server is waiting to accept user...");
         int clientNumber = 0;
         ID_room = 100;
-        // Mở một ServerSocket tại cổng 7777.
-        // Chú ý bạn không thể chọn cổng nhỏ hơn 1023 nếu không là người dùng
-        // đặc quyền (privileged users (root)).
+        
         try {
             listener = new ServerSocket(7777);
         } catch (IOException e) {

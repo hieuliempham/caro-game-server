@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package controller;
 
 import dao.UserDAO;
 import java.io.BufferedReader;
@@ -142,6 +142,8 @@ public class ServerThread implements Runnable {
                        userDAO.addUser(userRegister);
                        User userRegistered = userDAO.verifyUser(userRegister);
                        this.user = userRegistered;
+                       userDAO.updateToOnline(this.user.getID());
+                       Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đang online");
                        write("login-success,"+getStringFromUser(this.user));
                    }
                 }
@@ -149,6 +151,8 @@ public class ServerThread implements Runnable {
                 if(messageSplit[0].equals("offline")){
                     userDAO.updateToOffline(this.user.getID());
                     Server.admin.addMessage("["+user.getID()+"] "+user.getNickname()+" đã offline");
+                    Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
+                    this.user=null;
                 }
                 //Xử lý xem danh sách bạn bè
                 if(messageSplit[0].equals("view-friend-list")){
@@ -176,12 +180,16 @@ public class ServerThread implements Runnable {
                                 write("room-fully,");
                             }
                             else{
-                                this.room = serverThread.getRoom();
-                                room.setUser2(this);
-                                room.increaseNumberOfGame();
-                                this.userDAO.updateToPlaying(this.user.getID());
-                                goToPartnerRoom();
-                                
+                                if(serverThread.getRoom().getPassword()==null||serverThread.getRoom().getPassword().equals(messageSplit[2])){
+                                    this.room = serverThread.getRoom();
+                                    room.setUser2(this);
+                                    room.increaseNumberOfGame();
+                                    this.userDAO.updateToPlaying(this.user.getID());
+                                    goToPartnerRoom();
+                                }
+                                else{
+                                    write("room-wrong-password,");
+                                }
                             }
                             break;
                         }
