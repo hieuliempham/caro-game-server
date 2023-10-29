@@ -15,7 +15,7 @@ public class DAO {
     protected Connection con;
 
     public DAO() {
-        String jdbcURL = "jdbc:mysql://localhost:3306/caronhom5?useSSL=false";
+        String jdbcURL = "jdbc:mysql://localhost:3306/doancaro?useSSL=false";
         String jdbcUsername = "root";
         String jdbcPassword = ""; //please change information to connect to DB
         try {
